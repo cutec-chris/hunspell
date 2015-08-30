@@ -2,7 +2,7 @@ unit SpellCheck;
 
 interface
 uses
-  Windows, Classes, SysUtils, uHunSpellLib;
+  Classes, SysUtils, uHunSpellLib;
 
 type
   TSpellCheck = class(TComponent)
@@ -83,8 +83,8 @@ begin
     wrdswork := wrds;
     for i := 1 to Len do
     begin
-      Lines.Add(UTF8ToWideString(wrdswork^));
-      Inc(Integer(wrdswork), SizeOf(Pointer));
+      Lines.Add(UTF8Encode(wrdswork^));
+      Inc(wrdswork, SizeOf(Pointer));
     end; {for}
     uHunSpellLib.hunspell_suggest_free(FSpell, wrds, Len);
   end; {if}

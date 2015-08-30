@@ -33,8 +33,12 @@
  * ***** END LICENSE BLOCK ***** **)
 unit uHunSpellLib;
 
+{$ifdef FPC}
+{$mode DELPHI}
+{$ENDIF}
+
 interface
-uses Windows, SysUtils;
+uses SysUtils, dynlibs;
 
 var hunspell_initialize: function(aff_file: PAnsiChar; dict_file: PAnsiChar): Pointer; cdecl;
 var hunspell_uninitialize: procedure(sspel: Pointer); cdecl;
@@ -55,7 +59,11 @@ implementation
 function LoadLibHunspell(libraryName: String): Boolean;
 begin
   if libraryName = '' then
+    {$ifdef WINDOWS}
     libraryName := 'hunspelldll.dll';
+    {$else}
+    libraryName := 'libhunspell.so';
+    {$endif}
 
   Result := LibsLoaded;
   if Result then //already loaded.
